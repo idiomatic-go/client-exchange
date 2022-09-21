@@ -2,6 +2,7 @@ package accesslog
 
 import (
 	"github.com/idiomatic-go/entity-data/accesslog"
+	"github.com/idiomatic-go/metrics-data/accesslog/timeseries/v1"
 )
 
 func Startup() {
@@ -9,8 +10,9 @@ func Startup() {
 	if len(view.Headers) > 0 {
 
 	}
+	log := timeseries.StreamAccessLogsMessage{}
 	//log := v1.StreamAccessLogsMessage{}
-	//if log.ID != "" {
-	//
-	//}
+	if log.ID != "" {
+
+	}
 }
