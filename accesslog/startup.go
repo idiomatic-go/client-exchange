@@ -1,18 +1,44 @@
 package accesslog
 
 import (
-	"github.com/idiomatic-go/entity-data/accesslog"
-	"github.com/idiomatic-go/metrics-data/accesslog/timeseries/v1"
+	"github.com/idiomatic-go/common-lib/vhost"
+	vusr "github.com/idiomatic-go/common-lib/vhost/usr"
 )
 
+var c = make(chan *vusr.Message, 10)
+var startup = false
+
+// init - registers package with a channel
+func init() {
+	vhost.RegisterPackage(Uri, c)
+	go receive()
+}
+
 func Startup() {
-	view := accesslog.AccessLogView{}
-	if len(view.Headers) > 0 {
 
-	}
-	log := timeseries.StreamAccessLogsMessage{}
-	//log := v1.StreamAccessLogsMessage{}
-	if log.ID != "" {
+}
 
+func Shutdown() {
+	vhost.UnregisterPackage(Uri)
+}
+
+func receive() {
+	for {
+		select {
+		case msg, open := <-c:
+			// Exit on a closed channel
+			if !open {
+				return
+			}
+			switch msg.Event {
+			case vusr.StartupEvent:
+				if !startup {
+					startup = true
+					Startup()
+				}
+			case vusr.ShutdownEvent:
+				Shutdown()
+			}
+		}
 	}
 }
