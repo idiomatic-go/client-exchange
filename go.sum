@@ -148,8 +148,16 @@ github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6/go.mod h1:
 github.com/ianlancetaylor/demangle v0.0.0-20200824232613-28f6c0f3b639/go.mod h1:aSSvb/t6k1mPoxDqO4vJh6VOCGPwU4O0C2/Eqndh1Sc=
 github.com/idiomatic-go/common-lib v0.0.0-20220923155832-f39d6eb189dd h1:3qp1IShBY0iKfrqyI6lOtMPymr2xUrIx8/JtKcHLT1A=
 github.com/idiomatic-go/common-lib v0.0.0-20220923155832-f39d6eb189dd/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
+github.com/idiomatic-go/common-lib v0.0.0-20220924105355-6260faae3049 h1:BV7YVDmtvCimSRrPm1YBURZc7CxskDDsq/jxYfe9uA4=
+github.com/idiomatic-go/common-lib v0.0.0-20220924105355-6260faae3049/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
+github.com/idiomatic-go/common-lib v0.0.0-20220924142944-901b5ada16ce h1:B13361k6Vygje9V+avl7WSD9nAGrwyW1ud5Dw5v6Dr0=
+github.com/idiomatic-go/common-lib v0.0.0-20220924142944-901b5ada16ce/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
 github.com/idiomatic-go/entity-data v0.0.0-20220923191901-fafe397b9111 h1:V1YXch1Sm5/HKDZEpA7w2gOKyNraDZd4gU1ssVEFPfk=
 github.com/idiomatic-go/entity-data v0.0.0-20220923191901-fafe397b9111/go.mod h1:JDsskZTk3bRTFJ6qAx0/VUNZjcqGDEFY9uB/HnT+lk8=
+github.com/idiomatic-go/entity-data v0.0.0-20220924140910-71cca9a07452 h1:vSaOno7dp9oD8Q7jMWK4DM/GdIYMBcmKWKAi/jJnluM=
+github.com/idiomatic-go/entity-data v0.0.0-20220924140910-71cca9a07452/go.mod h1:LIsUDMNfeJfTl2KLouJPGYkA98JF1oGnknhzJDD2zh4=
+github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb h1:cvR0NgeL0DVtJZnb+bgPbFc9ijpMOYR43kKMWn3CFVQ=
+github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb/go.mod h1:Q11d8W85iPC8rCsIYHl0c3G5z4CE+ZgaMaw+PEOAkCw=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/XSXhF0NWZEnDohbsk=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
