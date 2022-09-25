@@ -2,11 +2,10 @@ package accesslog
 
 import (
 	"github.com/idiomatic-go/common-lib/vhost"
-	"os"
 )
 
 var c = make(chan vhost.Message, 10)
-var startup = false
+var started = false
 
 // init - registers package with a channel
 func init() {
@@ -14,17 +13,12 @@ func init() {
 	go receive()
 }
 
-func Startup() {
-	// Need to verify that there is an entity data url
-	url := os.Getenv(EntityDataUrlKey)
-	if url == "" {
-		msg := vhost.CreateMessage(vhost.ErrorEvent, Uri, "Upstream entity data Url is empty")
-		vhost.SendResponse(msg)
-		return
-	}
+func startup() {
+	// Need to determine security for upstream origin discovery requests
+	discoveryStartup()
 }
 
-func Shutdown() {
+func shutdown() {
 	vhost.UnregisterPackage(Uri)
 }
 
@@ -38,12 +32,12 @@ func receive() {
 			}
 			switch msg.Event {
 			case vhost.StartupEvent:
-				if !startup {
-					startup = true
-					Startup()
+				if !started {
+					started = true
+					startup()
 				}
 			case vhost.ShutdownEvent:
-				Shutdown()
+				shutdown()
 			}
 		}
 	}

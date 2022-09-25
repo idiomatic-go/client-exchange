@@ -2,7 +2,6 @@ package accesslog
 
 import (
 	"github.com/idiomatic-go/client-exchange/accesslog/envoy"
-
 	mdata "github.com/idiomatic-go/metric-data/accesslog"
 )
 

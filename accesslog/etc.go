@@ -1,34 +1,43 @@
 package accesslog
 
 import (
-	"github.com/idiomatic-go/common-lib/vhost"
+	"github.com/idiomatic-go/common-lib/util"
 	"os"
 	"strconv"
 )
 
 const (
-	// PollingIntervalKey - Environment key for configuration polling interval
-	AccessLogPollingIntervalKey = "ACCESS_POLLING_INTERVAL" // Numeric string denoting seconds
+	// Environment keys for access logging mutations
+	AccessLogIngress          = "ACCESS_LOG_INGRESS"
+	AccessLogEgress           = "ACCESS_LOG_EGRESS"
+	AccessLogRequestHeaders   = "ACCESS_LOG_REQUEST_HEADERS"
+	AccessLogResponseHeaders  = "ACCESS_LOG_RESPONSE_HEADERS"
+	AccessLogResponseTrailers = "ACCESS_LOG_RESPONSE_TRAILERS"
+	AccessLogCookies          = "ACCESS_LOG_COOKIES"
 
-	DefaultPollingInterval = 600 // 10 minutes
+	// PollingIntervalKey - Environment key for configuration polling interval
+	AccessLogPollingIntervalKey = "ACCESS_LOG_POLLING_INTERVAL" // Numeric string denoting minutes
 
 	// EntityDataUrlKey - Environment key for entity data server Url
-	EntityDataUrlKey = "ENTITY_DATA_URL"
+	AccessLogEntityDataUrlKey = "ACCESS_LOG_ENTITY_DATA_URL"
 )
 
-func GetPollingInterval() (seconds int) {
-	seconds = DefaultPollingInterval
+func getPollingInterval() (minutes int) {
 	s := os.Getenv(AccessLogPollingIntervalKey)
-	if s != "" {
-		sec, err := strconv.Atoi(s)
-		if err != nil {
-			vhost.LogPrintf("%v", err)
-		}
-		seconds = sec
+	if s == "" {
+		return 0
 	}
-	return seconds
+	minutes, err := strconv.Atoi(s)
+	if err != nil {
+		util.LogPrintf("%v", err)
+		return 0
+	}
+	if minutes < 0 {
+		return 0
+	}
+	return minutes
 }
 
-func GetEntityDataUrl() string {
-	return os.Getenv(EntityDataUrlKey)
+func getEntityDataUrl() string {
+	return os.Getenv(AccessLogEntityDataUrlKey)
 }
