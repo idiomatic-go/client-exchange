@@ -11,34 +11,33 @@ import (
 
 var entity = data.CreateVersionedEntity()
 
-var exchange util.DispatchStatus func() error {
-	req,err0 := http.NewRequest("",GetEntityDataUrl(),nil)
+var exchange util.DispatchStatus = func() error {
+	req, err0 := http.NewRequest("", GetEntityDataUrl(), nil)
 	if err0 != nil {
-		vhost.LogPrintf("%v",err0)
+		vhost.LogPrintf("%v", err0)
 		return err0
 	}
 	status := httpxt.DoWithStatus(req)
 	if status.HttpErr != nil {
-		vhost.LogPrintf("%v",err0)
+		vhost.LogPrintf("%v", err0)
 		return status.HttpErr
 	}
+	return nil
 }
 
 var handler util.Dispatch = func() {
-    exchange()
+	exchange()
 }
 
 // configStartup - Initialize timer to poll for entity updates
 func configStartup() {
-    if exchange() != nil {
+	if exchange() != nil {
 		vhost.SendErrorResponse(Uri)
 		return
 	}
-   go util.Timer(true,time.Second * time.Duration(GetPollingInterval()),nil,handler)
+	go util.Timer(true, time.Second*time.Duration(GetPollingInterval()), nil, handler)
 }
 
 func GetConfig() data.AccessLogView {
 	return entity.GetEntity()
 }
-
-

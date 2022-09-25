@@ -11,7 +11,7 @@ require (
 )
 
 require (
-	github.com/idiomatic-go/common-lib v0.0.0-20220924142944-901b5ada16ce
+	github.com/idiomatic-go/common-lib v0.0.0-20220924163935-397b09d40cd7
 	github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb
 )
 
