@@ -2,7 +2,6 @@ package accesslog
 
 import (
 	"github.com/idiomatic-go/client-exchange/accesslog/envoy"
-	mdata "github.com/idiomatic-go/metric-data/accesslog"
 )
 
 func ProcessMessage(msg *accesslogv3.StreamAccessLogsMessage) {
@@ -11,10 +10,4 @@ func ProcessMessage(msg *accesslogv3.StreamAccessLogsMessage) {
 		// send on channel
 	}
 
-}
-
-func convert(msg *accesslogv3.StreamAccessLogsMessage) mdata.StreamAccessLogsMessage {
-	var d mdata.StreamAccessLogsMessage
-
-	return d
 }

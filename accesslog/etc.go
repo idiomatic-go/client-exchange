@@ -7,23 +7,32 @@ import (
 )
 
 const (
-	// Environment keys for access logging mutations
-	AccessLogIngress          = "ACCESS_LOG_INGRESS"
-	AccessLogEgress           = "ACCESS_LOG_EGRESS"
-	AccessLogRequestHeaders   = "ACCESS_LOG_REQUEST_HEADERS"
-	AccessLogResponseHeaders  = "ACCESS_LOG_RESPONSE_HEADERS"
-	AccessLogResponseTrailers = "ACCESS_LOG_RESPONSE_TRAILERS"
-	AccessLogCookies          = "ACCESS_LOG_COOKIES"
+	// Environment keys for logging views
+	LogAppIngressKey = "LOG_APP_INGRESS"
+	LogAppEgressKey  = "LOG_APP_EGRESS"
 
-	// PollingIntervalKey - Environment key for configuration polling interval
-	AccessLogPollingIntervalKey = "ACCESS_LOG_POLLING_INTERVAL" // Numeric string denoting minutes
+	LogRequestHeadersIngressKey = "LOG_REQUEST_HEADERS_INGRESS"
+	LogRequestHeadersEgressKey  = "LOG_REQUEST_HEADERS_EGRESS"
 
-	// EntityDataUrlKey - Environment key for entity data server Url
-	AccessLogEntityDataUrlKey = "ACCESS_LOG_ENTITY_DATA_URL"
+	LogResponseHeadersIngressKey = "LOG_RESPONSE_HEADERS_INGRESS"
+	LogResponseHeadersEgressKey  = "LOG_RESPONSE_HEADERS_EGRESS"
+
+	LogResponseTrailersIngressKey = "LOG_RESPONSE_TRAILERS_INGRESS"
+	LogResponseTrailersEgressKey  = "LOG_RESPONSE_TRAILERS_EGRESS"
+
+	LogCookiesIngressKey = "LOG_COOKIES_INGRESS"
+	LogCookiesEgressKey  = "LOG_COOKIES_EGRESS"
+
+	LogPollingIntervalKey = "LOG_POLLING_INTERVAL" // Numeric string denoting minutes
+
+	LogEntityDataUrlKey = "LOG_ENTITY_DATA_URL"
+
+	LogIngressOriginHttpUrlKey     = "LOG_INGRESS_ORIGIN_HTTP_URL"
+	LogIngressOriginGRPCAddressKey = "LOG_INGRESS_ORIGIN_GRPC_ADDRESS"
 )
 
 func getPollingInterval() (minutes int) {
-	s := os.Getenv(AccessLogPollingIntervalKey)
+	s := os.Getenv(LogPollingIntervalKey)
 	if s == "" {
 		return 0
 	}
@@ -39,5 +48,13 @@ func getPollingInterval() (minutes int) {
 }
 
 func getEntityDataUrl() string {
-	return os.Getenv(AccessLogEntityDataUrlKey)
+	return os.Getenv(LogEntityDataUrlKey)
+}
+
+func getIngressHttpUrl() string {
+	return os.Getenv(LogIngressOriginHttpUrlKey)
+}
+
+func getIngressGRPCAddress() string {
+	return os.Getenv(LogIngressOriginGRPCAddressKey)
 }

@@ -16,6 +16,8 @@ func init() {
 func startup() {
 	// Need to determine security for upstream origin discovery requests
 	discoveryStartup()
+
+	// How to verify origin connectivity?
 }
 
 func shutdown() {
