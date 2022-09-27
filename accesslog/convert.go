@@ -62,6 +62,6 @@ func convertCommon(common *mdata.AccessLogCommon, envoy *accesslogv32.AccessLogC
 
 		common.ConnectionTerminationDetails  = envoy.ConnectionTerminationDetails string
 
-	
+
 	*/
 }
