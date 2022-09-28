@@ -11,6 +11,9 @@ const (
 	LogAppIngressKey = "LOG_APP_INGRESS"
 	LogAppEgressKey  = "LOG_APP_EGRESS"
 
+	LogCustomIngressKey = "LOG_CUSTOM_INGRESS"
+	LogCustomEgressKey  = "LOG_CUSTOM_EGRESS"
+
 	LogRequestHeadersIngressKey = "LOG_REQUEST_HEADERS_INGRESS"
 	LogRequestHeadersEgressKey  = "LOG_REQUEST_HEADERS_EGRESS"
 

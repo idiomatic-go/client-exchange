@@ -34,8 +34,8 @@ var exchange util.NiladicStatus = func() error {
 // discoveryStartup - Initialize discovery
 func discoveryStartup() {
 	// Initialize entity, accessing attributes from environment if configured
-	ingress := data.CSVAttributes{App: os.Getenv(LogAppIngressKey), RequestHeaders: os.Getenv(LogRequestHeadersIngressKey), ResponseHeaders: os.Getenv(LogResponseHeadersIngressKey), ResponseTrailers: os.Getenv(LogResponseTrailersIngressKey), Cookies: os.Getenv(LogCookiesIngressKey)}
-	egress := data.CSVAttributes{App: os.Getenv(LogAppEgressKey), RequestHeaders: os.Getenv(LogRequestHeadersEgressKey), ResponseHeaders: os.Getenv(LogResponseHeadersEgressKey), ResponseTrailers: os.Getenv(LogResponseTrailersEgressKey), Cookies: os.Getenv(LogCookiesEgressKey)}
+	ingress := data.CSVAttributes{App: os.Getenv(LogAppIngressKey), Custom: os.Getenv(LogCustomIngressKey), RequestHeaders: os.Getenv(LogRequestHeadersIngressKey), ResponseHeaders: os.Getenv(LogResponseHeadersIngressKey), ResponseTrailers: os.Getenv(LogResponseTrailersIngressKey), Cookies: os.Getenv(LogCookiesIngressKey)}
+	egress := data.CSVAttributes{App: os.Getenv(LogAppEgressKey), Custom: os.Getenv(LogCustomEgressKey), RequestHeaders: os.Getenv(LogRequestHeadersEgressKey), ResponseHeaders: os.Getenv(LogResponseHeadersEgressKey), ResponseTrailers: os.Getenv(LogResponseTrailersEgressKey), Cookies: os.Getenv(LogCookiesEgressKey)}
 	view := data.CreateEntity(&ingress, &egress)
 	entity.SetEntity(&view)
 
