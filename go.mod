@@ -12,7 +12,7 @@ require (
 
 require (
 	github.com/idiomatic-go/common-lib v0.0.0-20220926180102-86d486e815fc
-	github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb
+	github.com/idiomatic-go/metric-data v0.0.0-20220928132906-e269d0d92103
 	google.golang.org/grpc v1.45.0
 )
 
