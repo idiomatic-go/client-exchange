@@ -2,7 +2,7 @@ package accesslog
 
 import (
 	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
-	md "github.com/idiomatic-go/metric-data/accesslog"
+	md "github.com/idiomatic-go/metric-data/accesslogv3"
 )
 
 func convertHttpRequest(envoy *datav3.HTTPRequestProperties) *md.HTTPRequestProperties {
@@ -10,8 +10,8 @@ func convertHttpRequest(envoy *datav3.HTTPRequestProperties) *md.HTTPRequestProp
 		return nil
 	}
 	req := new(md.HTTPRequestProperties)
-	req.RequestMethodName = GetRequestMethodName(int32(envoy.RequestMethod))
-	req.Scheme = envoy.GetRequestId()
+	req.RequestMethod = md.RequestMethod(envoy.GetRequestMethod())
+	req.Scheme = envoy.GetScheme()
 	req.Authority = envoy.GetAuthority()
 	if envoy.GetPort() != nil {
 		req.Port = envoy.GetPort().Value

@@ -156,6 +156,8 @@ github.com/idiomatic-go/metric-data v0.0.0-20220928124613-3bdf75f74ef1 h1:yBZR5B
 github.com/idiomatic-go/metric-data v0.0.0-20220928124613-3bdf75f74ef1/go.mod h1:Q11d8W85iPC8rCsIYHl0c3G5z4CE+ZgaMaw+PEOAkCw=
 github.com/idiomatic-go/metric-data v0.0.0-20220928132906-e269d0d92103 h1:O4twmtynrnbz5ulFjLXZ9iQXmA+iQXToGl5+xQPtYu8=
 github.com/idiomatic-go/metric-data v0.0.0-20220928132906-e269d0d92103/go.mod h1:Q11d8W85iPC8rCsIYHl0c3G5z4CE+ZgaMaw+PEOAkCw=
+github.com/idiomatic-go/metric-data v0.0.0-20220929164343-69ac2e981f4a h1:LRNSPz8CCYjd4+BIbJONrIUQUWyNBO4M45wPsFxFXPI=
+github.com/idiomatic-go/metric-data v0.0.0-20220929164343-69ac2e981f4a/go.mod h1:WYHiHc+izzGTCgi+J3rRa9IumSz6UaPIMs4PR5SOpxc=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/XSXhF0NWZEnDohbsk=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=

@@ -3,11 +3,11 @@ package accesslog
 import (
 	corev3 "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
-	md "github.com/idiomatic-go/metric-data/accesslog"
+	md "github.com/idiomatic-go/metric-data/accesslogv3"
 	"strconv"
 )
 
-func convertCommon(log *md.Common, envoy *datav3.AccessLogCommon) {
+func convertCommon(log *md.AccessLogCommon, envoy *datav3.AccessLogCommon) {
 	log.SampleRate = envoy.GetSampleRate()
 	log.DownstreamRemoteAddress = convertAddress(envoy.GetDownstreamRemoteAddress())
 	log.DownstreamLocalAddress = convertAddress(envoy.GetDownstreamLocalAddress())
@@ -76,7 +76,7 @@ func convertAddress(envoy *corev3.Address) *md.Address {
 	if envoy.GetSocketAddress() != nil {
 		ea := envoy.GetSocketAddress()
 		address.SocketAddress = new(md.SocketAddress)
-		address.SocketAddress.Protocol = GetProtocolName(ea.GetProtocol())
+		address.SocketAddress.Protocol = md.SocketAddress_Protocol(ea.GetProtocol())
 		address.SocketAddress.Address = ea.GetAddress()
 		if ea.GetNamedPort() != "" {
 			address.SocketAddress.PortSpecifier = ea.GetNamedPort()
@@ -110,15 +110,14 @@ func convertTls(envoy *datav3.TLSProperties) *md.TLSProperties {
 	}
 
 	tls := new(md.TLSProperties)
-	//tls.TlsVersion = datav3.TLSProperties_TLSVersion_name[int32(envoy.TlsVersion)]
-	//vers := strconv.Itoa(int(envoy.TlsProperties.TlsVersion))
-	//log.TlsProperties.TlsVersion = log.Conmdata.TLSProperties_TLSVersion(strconv.Atoi(vers))
-	return tls
-}
-
-func GetProtocolName(protocol corev3.SocketAddress_Protocol) string {
-	if protocol < 0 || protocol > 1 {
-		return ""
+	tls.TlsVersion = md.TLSProperties_TLSVersion(envoy.GetTlsVersion())
+	tls.TlsCipherSuite = envoy.GetTlsCipherSuite().Value
+	tls.TlsSniHostname = envoy.GetTlsSniHostname()
+	if envoy.GetLocalCertificateProperties() != nil {
+		//ea := envoy.GetLocalCertificateProperties().GetSubject()
 	}
-	return corev3.SocketAddress_Protocol_name[int32(protocol)]
+	tls.TlsSessionId = envoy.GetTlsSessionId()
+	// BUG : missing Ja3Fingerprint
+	//tls.Ja3Fingerprint = envoy.GetJa3Fingerprint()
+	return tls
 }

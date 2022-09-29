@@ -1,22 +1,25 @@
 package accesslog
 
 import (
+	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
 	servicev3 "github.com/envoyproxy/go-control-plane/envoy/service/accesslog/v3"
-	"github.com/idiomatic-go/metric-data/accesslog"
+	md "github.com/idiomatic-go/metric-data/accesslogv3"
 )
 
-func convert(msg *accesslog.Message, envoy *servicev3.StreamAccessLogsMessage) {
-	setTraffic(msg, envoy)
-	//logs := msg.GetHttpLogs().
-	// Create default view
-	//convertDefaultView(log, msg)
-	//convertAppIngress(log, msg)
-	//convertAppEgress(log, msg)
-	//convertAppIngress(log, msg)
-	//convertAppEgress(log, msg)
-
+func convertMessage(msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
+	// Convert node
+	logs := envoy.GetHttpLogs()
+	if logs != nil {
+		for _, entry := range logs.GetLogEntry() {
+			ce := new(md.CombinedEntry)
+			if entry != nil {
+			}
+			msg.LogEntries = append(msg.LogEntries, ce)
+		}
+	}
+	return
 }
 
-func setTraffic(log *accesslog.Message, envoy *servicev3.StreamAccessLogsMessage) {
-	//envoy.GetHttpLogs().GetLogEntry()[0].GetCommonProperties().
+func convertHttpAccessLogEntry(envoy *datav3.HTTPAccessLogEntry) {
+
 }

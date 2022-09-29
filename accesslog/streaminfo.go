@@ -1,5 +1,10 @@
 package accesslog
 
+import (
+	v31 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
+	md "github.com/idiomatic-go/metric-data/accesslogv3"
+)
+
 const (
 	NONE                                 = "-"
 	DOWNSTREAM_CONNECTION_TERMINATION    = "DC"
@@ -125,3 +130,125 @@ const (
 	// ATTENTION: MAKE SURE THIS REMAINS EQUAL TO THE LAST FLAG.
 	LastFlag = DnsResolutionFailed
 )
+
+func EncodeResponseFlags(resp *v31.ResponseFlags) md.ResponseFlags_Encoded {
+	var flags md.ResponseFlags_Encoded
+
+	// Start with response code generating flags, 404.429.503.504
+
+	// Indicates there was an upstream request timeout.
+	if resp.GetUpstreamRequestTimeout() {
+		flags |= UpstreamRequestTimeout
+	}
+	// Indicates there was no healthy upstream.
+	if resp.GetNoHealthyUpstream() {
+		flags |= NoHealthyUpstream
+	}
+	// Indicates there was a local reset by a connection pool due to an initial connection failure.
+	if resp.GetUpstreamConnectionFailure() {
+		flags |= UpstreamConnectionFailure
+	}
+	// Indicates remote codec level reset was received on the stream.
+	if resp.GetUpstreamRemoteReset() {
+		flags |= UpstreamRemoteReset
+	}
+	// Indicates the stream was reset due to an upstream connection termination.
+	if resp.GetUpstreamConnectionTermination() {
+		flags |= UpstreamConnectionTermination
+	}
+	// Indicates the stream was reset because of a resource overflow.
+	if resp.GetUpstreamOverflow() {
+		flags |= UpstreamOverflow
+	}
+	// Indicates no route was found for the request.
+	if resp.GetNoRouteFound() {
+		flags |= NoRouteFound
+	}
+	// Indicates that the request was rate-limited locally.
+	if resp.GetRateLimited() {
+		flags |= RateLimited
+	}
+
+	// Next, finish upstream errors
+	// Indicates that the upstream retry limit was exceeded, resulting in a downstream error.
+	if resp.GetUpstreamRetryLimitExceeded() {
+		flags |= UpstreamRetryLimitExceeded
+	}
+	// Indicates no cluster was found for the request.
+	if resp.GetNoClusterFound() {
+		flags |= NoClusterFound
+	}
+	// Next, local/downstream connection
+
+	// Indicates local codec level reset was sent on the stream.
+	if resp.GetLocalReset() {
+		flags |= LocalReset
+	}
+	// Indicates the stream was reset due to a downstream connection termination.
+	if resp.GetDownstreamConnectionTermination() {
+		flags |= DownstreamConnectionTermination
+	}
+	// Indicates local server healthcheck failed.
+	if resp.GetFailedLocalHealthcheck() {
+		flags |= FailedLocalHealthCheck
+	}
+	// Indicates that the stream idle timeout was hit, resulting in a downstream 408.
+	if resp.GetStreamIdleTimeout() {
+		flags |= StreamIdleTimeout
+	}
+
+	// Add UAEX
+
+	// Indicates that the request was delayed before proxying.
+	if resp.GetDelayInjected() {
+		flags |= DelayInjected
+	}
+	// Indicates that the request was aborted with an injected error code.
+	if resp.GetFaultInjected() {
+		flags |= FaultInjected
+	}
+	// Indicates if the request was deemed unauthorized and the reason for it.
+	//UnauthorizedDetails *ResponseFlags_Unauthorized
+	// Indicates that the request was rejected because there was an error in rate limit service.
+	if resp.GetRateLimitServiceError() {
+		flags |= RateLimitServiceError
+	}
+	// Indicates that the request was rejected because an envoy request header failed strict
+	// validation.
+	if resp.GetInvalidEnvoyRequestHeaders() {
+		flags |= InvalidEnvoyRequestHeaders
+	}
+	// Indicates there was an HTTP protocol error on the downstream request.
+	if resp.GetDownstreamProtocolError() {
+		flags |= DownstreamProtocolError
+	}
+	// Indicates there was a max stream duration reached on the upstream request.
+	if resp.GetUpstreamMaxStreamDurationReached() {
+		flags |= UpstreamMaxStreamDurationReached
+	}
+	// Indicates the response was served from a cache filter.
+	if resp.GetResponseFromCacheFilter() {
+		flags |= ResponseFromCacheFilter
+	}
+	// Indicates that a filter configuration is not available.
+	if resp.GetNoFilterConfigFound() {
+		flags |= NoFilterConfigFound
+	}
+	// Indicates that request or connection exceeded the downstream connection duration.
+	if resp.GetDurationTimeout() {
+		flags |= DurationTimeout
+	}
+	// Indicates there was an HTTP protocol error in the upstream response.
+	if resp.GetUpstreamProtocolError() {
+		flags |= UpstreamProtocolError
+	}
+	// Indicates overload manager terminated the request.
+	if resp.GetOverloadManager() {
+		flags |= OverloadManager
+	}
+	// Indicates a DNS resolution failed.
+	if resp.GetDnsResolutionFailure() {
+		flags |= DnsResolutionFailed
+	}
+	return flags
+}
