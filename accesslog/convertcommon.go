@@ -3,25 +3,21 @@ package accesslog
 import (
 	corev3 "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
 	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
-	"github.com/idiomatic-go/metric-data/accesslog"
+	md "github.com/idiomatic-go/metric-data/accesslog"
+	"strconv"
 )
 
-func convertCommon(log *accesslog.Common, envoy *datav3.AccessLogCommon) {
+func convertCommon(log *md.Common, envoy *datav3.AccessLogCommon) {
 	log.SampleRate = envoy.GetSampleRate()
-	log.RouteName = envoy.GetRouteName()
-	log.UpstreamCluster = envoy.GetUpstreamCluster()
-	//log.ConnectionTerminationDetails = envoy.GetConnectionTerminationDetails()
-	log.UpstreamTransportFailureReason = envoy.GetUpstreamTransportFailureReason()
+	log.DownstreamRemoteAddress = convertAddress(envoy.GetDownstreamRemoteAddress())
+	log.DownstreamLocalAddress = convertAddress(envoy.GetDownstreamLocalAddress())
+
+	log.TlsProperties = convertTls(envoy.GetTlsProperties())
 	if envoy.GetStartTime() != nil {
 		t := envoy.GetStartTime().AsTime()
 		log.StartTime = &t
 	}
-	//if envoy.GetDuration() != nil {
-	//	t := envoy.GetDuration().AsTime()
-	//	common.Duration = &t
-	//}
-	convertTls(log, envoy)
-	convertResponseFlags(log, envoy)
+
 	if envoy.GetTimeToLastRxByte() != nil {
 		t := envoy.GetTimeToLastRxByte().AsDuration()
 		log.TimeToLastRxByte = &t
@@ -50,68 +46,79 @@ func convertCommon(log *accesslog.Common, envoy *datav3.AccessLogCommon) {
 		t := envoy.GetTimeToLastDownstreamTxByte().AsDuration()
 		log.TimeToLastDownstreamTxByte = &t
 	}
-	convertAddress(envoy.GetDownstreamRemoteAddress())
-	/*
 
-		//common.DownstreamRemoteAddress  = envoy.DownstreamRemoteAddress
-		//common.DownstreamLocalAddress = envoy.DownstreamLocalAddress *Address
-		//common.TlsProperties  = envoy.TlsProperties*TLSProperties
+	log.UpstreamRemoteAddress = convertAddress(envoy.GetUpstreamRemoteAddress())
+	log.UpstreamLocalAddress = convertAddress(envoy.GetUpstreamLocalAddress())
+	log.UpstreamCluster = envoy.GetUpstreamCluster()
 
-		common.TimeToLastRxByte = envoy.GetTimeToLastRxByte()
-		common.TimeToFirstUpstreamTxByte  = envoy.GetTimeToFirstUpstreamTxByte()
-		common.TimeToLastUpstreamTxByte  = envoy.TimeToLastUpstreamTxByte*time.Duration
-		common.TimeToFirstUpstreamRxByte  = envoy.TimeToFirstUpstreamRxByte*time.Duration
-		common.TimeToLastUpstreamRxByte  = envoy.TimeToLastUpstreamRxByte*time.Duration
-		common.TimeToFirstDownstreamTxByte  = envoy.TimeToFirstDownstreamTxByte*time.Duration
-		common.TimeToLastDownstreamTxByte  = envoy.*time.Duration
-		common.UpstreamRemoteAddress  = envoy.UpstreamRemoteAddress*Address
-		common.UpstreamLocalAddress  = envoy.UpstreamLocalAddress*Address
-		common.UpstreamCluster  = envoy.UpstreamClusterstring
-		common.ResponseFlags  = envoy.ResponseFlags*ResponseFlags
+	convertResponseFlags(log, envoy.GetResponseFlags())
+	log.UpstreamTransportFailureReason = envoy.GetUpstreamTransportFailureReason()
+	log.RouteName = envoy.GetRouteName()
+	log.DownstreamDirectRemoteAddress = convertAddress(envoy.GetDownstreamRemoteAddress())
 
-		common.Metadata  = envoy.Metadata*v32.Metadata
+	log.CustomTags = envoy.GetCustomTags()
 
+	// BUG : v3 common still the same as v2
+	//if envoy.GetDuration() != nil {
+	//	t := envoy.GetDuration().AsTime()
+	//	common.Duration = &t
+	//}
+	//log.UpstreamRequestAttemptCount  = envoy.UpstreamRequestAttemptCount
+	//log.ConnectionTerminationDetails = envoy.GetConnectionTerminationDetails()
 
-		common.UpstreamTransportFailureReason = envoy.UpstreamTransportFailureReason
-		common.RouteName  = envoy.RouteNamestring
-		common.DownstreamDirectRemoteAddress  = envoy.DownstreamDirectRemoteAddress*Address
-
-
-		common.CustomTags  = envoy.CustomTags  map[string]string
-
-		common.UpstreamRequestAttemptCount  = envoy.UpstreamRequestAttemptCount
-
-		common.ConnectionTerminationDetails  = envoy.ConnectionTerminationDetails string
-
-
-	*/
 }
 
-func convertAddress(envoy *corev3.Address) *accesslog.Address {
+func convertAddress(envoy *corev3.Address) *md.Address {
 	if envoy == nil {
 		return nil
 	}
-	address := new(accesslog.Address)
+	address := new(md.Address)
 	if envoy.GetSocketAddress() != nil {
-
-	} else {
-		if envoy.GetPipe() != nil {
-
+		ea := envoy.GetSocketAddress()
+		address.SocketAddress = new(md.SocketAddress)
+		address.SocketAddress.Protocol = GetProtocolName(ea.GetProtocol())
+		address.SocketAddress.Address = ea.GetAddress()
+		if ea.GetNamedPort() != "" {
+			address.SocketAddress.PortSpecifier = ea.GetNamedPort()
 		} else {
-			if envoy.GetEnvoyInternalAddress() != nil {
-
-			}
+			address.SocketAddress.PortSpecifier = strconv.Itoa(int(ea.GetPortValue()))
 		}
+		address.SocketAddress.ResolverName = ea.GetResolverName()
+		address.SocketAddress.Ipv4Compat = ea.GetIpv4Compat()
+		return address
+	}
+	if envoy.GetPipe() != nil {
+		ea := envoy.GetPipe()
+		address.Pipe = new(md.Pipe)
+		address.Pipe.Path = ea.GetPath()
+		address.Pipe.Mode = ea.GetMode()
+		return address
+	}
+	if envoy.GetEnvoyInternalAddress() != nil {
+		ea := envoy.GetEnvoyInternalAddress()
+		address.EnvoyInternalAddress = new(md.EnvoyInternalAddress)
+		address.EnvoyInternalAddress.ServerListenerName = ea.GetServerListenerName()
+		// BUG : v3 address still same as v2
+		//address.EnvoyInternalAddress.EndpointId = ea.EndpointId
 	}
 	return address
 }
 
-func convertTls(log *accesslog.Common, envoy *datav3.AccessLogCommon) {
-	if log == nil || envoy == nil || envoy.GetTlsProperties() == nil {
-		return
+func convertTls(envoy *datav3.TLSProperties) *md.TLSProperties {
+	if envoy == nil {
+		return nil
 	}
-	log.TlsProperties = new(accesslog.TLSProperties)
+
+	tls := new(md.TLSProperties)
+	//tls.TlsVersion = datav3.TLSProperties_TLSVersion_name[int32(envoy.TlsVersion)]
 	//vers := strconv.Itoa(int(envoy.TlsProperties.TlsVersion))
 	//log.TlsProperties.TlsVersion = log.Conmdata.TLSProperties_TLSVersion(strconv.Atoi(vers))
+	return tls
+}
 
+func GetProtocolName(protocol corev3.SocketAddress_Protocol) string {
+	if protocol < 0 || protocol > 1 {
+		return ""
+	}
+	return corev3.SocketAddress_Protocol_name[int32(protocol)]
 }

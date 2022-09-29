@@ -2,15 +2,14 @@ package accesslog
 
 import (
 	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
-	"github.com/idiomatic-go/metric-data/accesslog"
+	md "github.com/idiomatic-go/metric-data/accesslog"
 	"strings"
 )
 
-func convertResponseFlags(log *accesslog.Common, envoy *datav3.AccessLogCommon) {
+func convertResponseFlags(log *md.Common, resp *datav3.ResponseFlags) {
 	var flags string
 
-	resp := envoy.GetResponseFlags()
-	if log == nil || envoy == nil || resp == nil {
+	if log == nil || resp == nil {
 		return
 	}
 
