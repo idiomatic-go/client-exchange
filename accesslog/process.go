@@ -6,7 +6,7 @@ import (
 
 func ProcessMessage(msg *servicev3.StreamAccessLogsMessage) {
 	if msg != nil {
-		// convert the message
+		// internal the message
 		// send on channel
 	}
 

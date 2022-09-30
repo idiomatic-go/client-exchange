@@ -1,12 +1,11 @@
-package accesslog
+package internal
 
 import (
-	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
 	servicev3 "github.com/envoyproxy/go-control-plane/envoy/service/accesslog/v3"
 	md "github.com/idiomatic-go/metric-data/accesslogv3"
 )
 
-func convertMessage(msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
+func ConvertMessage(msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
 	// Convert node
 	logs := envoy.GetHttpLogs()
 	if logs != nil {
@@ -18,8 +17,4 @@ func convertMessage(msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
 		}
 	}
 	return
-}
-
-func convertHttpAccessLogEntry(envoy *datav3.HTTPAccessLogEntry) {
-
 }

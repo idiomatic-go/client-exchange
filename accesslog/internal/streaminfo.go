@@ -1,4 +1,4 @@
-package accesslog
+package internal
 
 import (
 	v31 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"

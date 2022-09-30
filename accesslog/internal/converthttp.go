@@ -1,11 +1,26 @@
-package accesslog
+package internal
 
 import (
 	datav3 "github.com/envoyproxy/go-control-plane/envoy/data/accesslog/v3"
 	md "github.com/idiomatic-go/metric-data/accesslogv3"
 )
 
-func convertHttpRequest(envoy *datav3.HTTPRequestProperties) *md.HTTPRequestProperties {
+func ConvertHttpAccessLogEntry(envoy *datav3.HTTPAccessLogEntry) *md.HTTPAccessLogEntry {
+	if envoy == nil {
+		return nil
+	}
+	entry := new(md.HTTPAccessLogEntry)
+	entry.ProtocolVersion = md.HTTPAccessLogEntry_HTTPVersion(envoy.GetProtocolVersion())
+	if envoy.GetRequest() != nil {
+		entry.Request = ConvertHttpRequest(envoy.GetRequest())
+	}
+	if envoy.GetResponse() != nil {
+		entry.Response = ConvertHttpResponse(envoy.GetResponse())
+	}
+	return entry
+}
+
+func ConvertHttpRequest(envoy *datav3.HTTPRequestProperties) *md.HTTPRequestProperties {
 	if envoy == nil {
 		return nil
 	}
@@ -28,7 +43,7 @@ func convertHttpRequest(envoy *datav3.HTTPRequestProperties) *md.HTTPRequestProp
 	return req
 }
 
-func convertHttpResponse(envoy *datav3.HTTPResponseProperties) *md.HTTPResponseProperties {
+func ConvertHttpResponse(envoy *datav3.HTTPResponseProperties) *md.HTTPResponseProperties {
 	if envoy == nil {
 		return nil
 	}
