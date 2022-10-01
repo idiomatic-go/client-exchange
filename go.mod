@@ -6,12 +6,12 @@ require (
 	github.com/cncf/xds/go v0.0.0-20220520190051-1e77728a1eaa
 	github.com/envoyproxy/go-control-plane v0.10.3
 	github.com/envoyproxy/protoc-gen-validate v0.6.8
-	github.com/idiomatic-go/entity-data v0.0.0-20220928100416-8c534cb21866
+	github.com/idiomatic-go/entity-data v0.0.0-20221001160644-36ed15b83d71
 	google.golang.org/protobuf v1.28.1
 )
 
 require (
-	github.com/idiomatic-go/common-lib v0.0.0-20220930162427-f5e361f7eae8
+	github.com/idiomatic-go/common-lib v0.0.0-20221001151404-456ebea1e5a5
 	github.com/idiomatic-go/metric-data v0.0.0-20221001112439-634b83c5c814
 	google.golang.org/grpc v1.45.0
 )

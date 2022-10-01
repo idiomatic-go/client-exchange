@@ -7,9 +7,9 @@ import (
 )
 
 func ExampleConvertMessagePanicCheck() {
-	ConvertMessage(nil, nil)
+	ConvertMessage(nil, nil, nil)
 	fmt.Println("Panic input : false")
-	ConvertMessage(new(md.Message), new(servicev3.StreamAccessLogsMessage))
+	ConvertMessage(nil, new(md.Message), new(servicev3.StreamAccessLogsMessage))
 	fmt.Println("Panic result : false")
 
 	//Output:

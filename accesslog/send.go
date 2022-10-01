@@ -17,6 +17,14 @@ func Send(msg *md.Message, ack bool) {
 	}
 }
 
+// SendViaHttp - send the message to the upstream origin server via Http
+func SendViaHttp(msg *md.Message) {
+	if msg == nil {
+		// Log error message
+		return
+	}
+}
+
 // SendEnvoyMessage - send the envoy message to the upstream origin server via gRPC
 func SendEnvoyMessage(envoy *servicev3.StreamAccessLogsMessage, ack bool) {
 	if envoy == nil {
@@ -24,16 +32,8 @@ func SendEnvoyMessage(envoy *servicev3.StreamAccessLogsMessage, ack bool) {
 		return
 	}
 	msg := CreateMessage()
-	internal.ConvertMessage(msg, envoy)
+	internal.ConvertMessage(GetConfiguration(), msg, envoy)
 	Send(msg, ack)
-}
-
-// SendViaHttp - send the message to the upstream origin server via Http
-func SendViaHttp(msg *md.Message) {
-	if msg == nil {
-		// Log error message
-		return
-	}
 }
 
 // SendEnvoyMessageViaHttp - send the envoy message to the upstream origin server via Http
@@ -43,6 +43,6 @@ func SendEnvoyMessageViaHttp(envoy *servicev3.StreamAccessLogsMessage) {
 		return
 	}
 	msg := CreateMessage()
-	internal.ConvertMessage(msg, envoy)
+	internal.ConvertMessage(GetConfiguration(), msg, envoy)
 	SendViaHttp(msg)
 }

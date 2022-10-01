@@ -5,15 +5,17 @@ import (
 	"github.com/golang/protobuf/ptypes/duration"
 	"github.com/golang/protobuf/ptypes/timestamp"
 	"github.com/idiomatic-go/common-lib/util"
+	data "github.com/idiomatic-go/entity-data/accesslog"
 	md "github.com/idiomatic-go/metric-data/accesslogv3"
 	"time"
 )
 
-func ConvertCommon(dictionary *util.InvertedDictionary, envoy *datav3.AccessLogCommon) *md.CommonProperties {
+func ConvertCommon(traffic md.Common_Traffic, config *data.Configuration, dictionary *util.InvertedDictionary, envoy *datav3.AccessLogCommon) *md.CommonProperties {
 	if envoy == nil {
 		return nil
 	}
 	common := new(md.CommonProperties)
+	common.Traffic = traffic
 	common.SampleRate = envoy.GetSampleRate()
 	common.DownstreamRemoteAddress = ConvertAddress(envoy.GetDownstreamRemoteAddress())
 	common.DownstreamLocalAddress = ConvertAddress(envoy.GetDownstreamLocalAddress())
@@ -41,7 +43,11 @@ func ConvertCommon(dictionary *util.InvertedDictionary, envoy *datav3.AccessLogC
 	common.RouteName = dictionary.Add(envoy.GetRouteName())
 	common.DownstreamDirectRemoteAddress = ConvertAddress(envoy.GetDownstreamRemoteAddress())
 
-	common.CustomTags = envoy.GetCustomTags()
+	if traffic == md.Common_Traffic_Egress {
+		common.CustomTags = util.MapSubset(config.Egress.Custom, envoy.GetCustomTags())
+	} else {
+		common.CustomTags = util.MapSubset(config.Ingress.Custom, envoy.GetCustomTags())
+	}
 
 	// BUG : v3 common still the same as v2
 	//if envoy.GetDuration() != nil {

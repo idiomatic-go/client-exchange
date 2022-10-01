@@ -150,8 +150,12 @@ github.com/idiomatic-go/common-lib v0.0.0-20220926180102-86d486e815fc h1:U2tI+Y7
 github.com/idiomatic-go/common-lib v0.0.0-20220926180102-86d486e815fc/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
 github.com/idiomatic-go/common-lib v0.0.0-20220930162427-f5e361f7eae8 h1:pM01NgkEN/qRwQVx9nSTnv5Upx4v9b6lwE4kpHVaq44=
 github.com/idiomatic-go/common-lib v0.0.0-20220930162427-f5e361f7eae8/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
+github.com/idiomatic-go/common-lib v0.0.0-20221001151404-456ebea1e5a5 h1:IqA93ratJwnOWtAFNtJx03upIBaZ2yEPLwB1NdQnmH0=
+github.com/idiomatic-go/common-lib v0.0.0-20221001151404-456ebea1e5a5/go.mod h1:JpDxKJmQ2Vw51nTIXTkn7BepYmUP4W6+z3ziTp6lAtM=
 github.com/idiomatic-go/entity-data v0.0.0-20220928100416-8c534cb21866 h1:aquLdy5hh/GtVbZaks4q3nAVOy6TQl4x1fOV103mWVo=
 github.com/idiomatic-go/entity-data v0.0.0-20220928100416-8c534cb21866/go.mod h1:8V7GwVvN8ZHFNOcvOFYvw0ljmordwWcifcPsEpYQ/88=
+github.com/idiomatic-go/entity-data v0.0.0-20221001160644-36ed15b83d71 h1:Hxo1fLbwraYU1RFw6/zKOrhOqG0lLMBZIopQg6FL9R4=
+github.com/idiomatic-go/entity-data v0.0.0-20221001160644-36ed15b83d71/go.mod h1:8V7GwVvN8ZHFNOcvOFYvw0ljmordwWcifcPsEpYQ/88=
 github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb h1:cvR0NgeL0DVtJZnb+bgPbFc9ijpMOYR43kKMWn3CFVQ=
 github.com/idiomatic-go/metric-data v0.0.0-20220922161447-21b7612884cb/go.mod h1:Q11d8W85iPC8rCsIYHl0c3G5z4CE+ZgaMaw+PEOAkCw=
 github.com/idiomatic-go/metric-data v0.0.0-20220928124613-3bdf75f74ef1 h1:yBZR5BbcVD0NR7qsOO8sitMDtzjh7yXPUtG0K1iu/mk=

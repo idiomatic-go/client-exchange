@@ -17,11 +17,11 @@ var handler util.Niladic = func() {
 var exchange util.NiladicStatus = func() error {
 	var status *httpxt.ResponseStatus
 
-	view := data.View{}
+	config := data.Configuration{}
 	for i := 0; i < 2; i++ {
-		status := util.HttpGetContent(nil, getEntityDataUrl(), nil, &view)
+		status := util.HttpGetContent(nil, getEntityDataUrl(), nil, &config)
 		if status.IsSuccess() {
-			entity.SetEntity(&view)
+			entity.SetEntity(&config)
 			return nil
 		}
 		if !status.IsRetriable() {
@@ -32,12 +32,12 @@ var exchange util.NiladicStatus = func() error {
 }
 
 // discoveryStartup - Initialize discovery
-func discoveryStartup() {
+var discoveryStartup util.Niladic = func() {
 	// Initialize entity, accessing attributes from environment if configured
 	ingress := data.CSVAttributes{App: os.Getenv(LogAppIngressKey), Custom: os.Getenv(LogCustomIngressKey), RequestHeaders: os.Getenv(LogRequestHeadersIngressKey), ResponseHeaders: os.Getenv(LogResponseHeadersIngressKey), ResponseTrailers: os.Getenv(LogResponseTrailersIngressKey), Cookies: os.Getenv(LogCookiesIngressKey)}
 	egress := data.CSVAttributes{App: os.Getenv(LogAppEgressKey), Custom: os.Getenv(LogCustomEgressKey), RequestHeaders: os.Getenv(LogRequestHeadersEgressKey), ResponseHeaders: os.Getenv(LogResponseHeadersEgressKey), ResponseTrailers: os.Getenv(LogResponseTrailersEgressKey), Cookies: os.Getenv(LogCookiesEgressKey)}
-	view := data.CreateEntity(&ingress, &egress)
-	entity.SetEntity(&view)
+	config := data.CreateEntity(&ingress, &egress)
+	entity.SetEntity(&config)
 
 	// If no Url configured, then discovery is disabled
 	uri := getEntityDataUrl()
@@ -58,7 +58,7 @@ func discoveryStartup() {
 	}
 }
 
-func GetEntity() *data.View {
-	e := entity.GetEntity()
-	return &e
+func GetConfiguration() *data.Configuration {
+	c := entity.GetEntity()
+	return &c
 }
