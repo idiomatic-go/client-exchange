@@ -11,8 +11,8 @@ require (
 )
 
 require (
-	github.com/idiomatic-go/common-lib v0.0.0-20220926180102-86d486e815fc
-	github.com/idiomatic-go/metric-data v0.0.0-20220929164343-69ac2e981f4a
+	github.com/idiomatic-go/common-lib v0.0.0-20220930162427-f5e361f7eae8
+	github.com/idiomatic-go/metric-data v0.0.0-20221001112439-634b83c5c814
 	google.golang.org/grpc v1.45.0
 )
 

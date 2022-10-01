@@ -2,6 +2,7 @@ package accesslog
 
 import (
 	"github.com/idiomatic-go/common-lib/util"
+	md "github.com/idiomatic-go/metric-data/accesslogv3"
 	"os"
 	"strconv"
 )
@@ -27,11 +28,16 @@ const (
 	LogCookiesEgressKey  = "LOG_COOKIES_EGRESS"
 
 	LogPollingIntervalKey = "LOG_POLLING_INTERVAL" // Numeric string denoting minutes
-
-	LogEntityDataUrlKey = "LOG_ENTITY_DATA_URL"
+	LogEntityDataUrlKey   = "LOG_ENTITY_DATA_URL"
 
 	LogIngressOriginHttpUrlKey     = "LOG_INGRESS_ORIGIN_HTTP_URL"
 	LogIngressOriginGRPCAddressKey = "LOG_INGRESS_ORIGIN_GRPC_ADDRESS"
+
+	IdentifierRegionKey      = "ID_REGION"
+	IdentifierZoneKey        = "ID_ZONE"
+	IdentifierSubZoneKey     = "ID_SUB_ZONE"
+	IdentifierApplicationKey = "ID_APPLICATION"
+	IdentifierInstanceId     = "ID_INSTANCE_ID"
 )
 
 func getPollingInterval() (minutes int) {
@@ -60,4 +66,14 @@ func getIngressHttpUrl() string {
 
 func getIngressGRPCAddress() string {
 	return os.Getenv(LogIngressOriginGRPCAddressKey)
+}
+
+func createIdentifier() *md.Provenance {
+	id := new(md.Provenance)
+	id.Locality.Region = os.Getenv(IdentifierRegionKey)
+	id.Locality.Zone = os.Getenv(IdentifierZoneKey)
+	id.Locality.SubZone = os.Getenv(IdentifierZoneKey)
+	id.Application = os.Getenv(IdentifierApplicationKey)
+	id.InstanceId = os.Getenv(IdentifierInstanceId)
+	return id
 }

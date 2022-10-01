@@ -14,10 +14,12 @@ func init() {
 }
 
 func startup() {
+	// Package configuration validation
+	// origin identifier validation
+	// How to verify origin connectivity?
 	// Need to determine security for upstream origin discovery requests
 	discoveryStartup()
 
-	// How to verify origin connectivity?
 }
 
 func shutdown() {
