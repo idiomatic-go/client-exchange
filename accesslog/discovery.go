@@ -58,6 +58,7 @@ func discoveryStartup() {
 	}
 }
 
-func GetEntity() data.View {
-	return entity.GetEntity()
+func GetEntity() *data.View {
+	e := entity.GetEntity()
+	return &e
 }

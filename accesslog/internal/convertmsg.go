@@ -3,14 +3,17 @@ package internal
 import (
 	servicev3 "github.com/envoyproxy/go-control-plane/envoy/service/accesslog/v3"
 	"github.com/idiomatic-go/common-lib/util"
+	data "github.com/idiomatic-go/entity-data/accesslog"
 	md "github.com/idiomatic-go/metric-data/accesslogv3"
 )
 
-func ConvertMessage(msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
+func ConvertMessage(config data.View, msg *md.Message, envoy *servicev3.StreamAccessLogsMessage) {
 	if envoy == nil || msg == nil {
 		return
 	}
-	msg.Dictionary = util.CreateInvertedDictionary(false)
+	if msg.Dictionary == nil {
+		msg.Dictionary = util.CreateInvertedDictionary(false)
+	}
 	logs := envoy.GetHttpLogs()
 	if logs != nil {
 		for _, entry := range logs.GetLogEntry() {
